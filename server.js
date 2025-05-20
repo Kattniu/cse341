@@ -7,15 +7,16 @@ const contactsRoute = require('./src/routes/contactsRoutes');
 connectDataBase();
 
 const port = process.env.PORT || 8080;
+app.use(express.json());
 
 // Frontend static files
 app.use(express.static('public'));
 
-// Routes to endpoints
+// Routes
 app.use('/professional', professionalRoute);
 app.use('/contacts', contactsRoute)
 
-// Start the server
+//Iniciar servidor 
 app.listen(port, () => {
   console.log('Web Server is listening at port ' + port);
 });
