@@ -1,0 +1,42 @@
+### Obtener todos los contactos
+GET http://localhost:8080/contacts
+Accept: application/json
+
+###
+
+### Obtener un contacto por ID
+GET http://localhost:8080/contacts/{{id}}
+Accept: application/json
+
+###
+
+### Crear un nuevo contacto (todos los campos requeridos)
+POST http://localhost:8080/contacts
+Content-Type: application/json
+
+{
+  "firstName": "María",
+  "lastName": "Gómez",
+  "email": "maria.gomez@example.com",
+  "favoriteColor": "azul",
+  "birthday": "1992-09-15"
+}
+
+###
+
+### Actualizar un contacto existente (todos los campos requeridos)
+PUT http://localhost:8080/contacts/{{id}}
+Content-Type: application/json
+
+{
+  "firstName": "María Luisa",
+  "lastName": "Gómez",
+  "email": "maria.luisa@example.com",
+  "favoriteColor": "verde",
+  "birthday": "1992-09-15"
+}
+
+###
+
+### Eliminar un contacto
+DELETE http://localhost:8080/contacts/{{id}}
