@@ -6,6 +6,9 @@ const contactsSchema = new mongoose.Schema({
     email: { type: String, required: true},
     favoriteColor: { type: String},
     birthday: { type: Date}
-});
+},
+  {
+    collection: "Contacts",
+  });
 
 module.exports = mongoose.model('Contacts', contactsSchema);
