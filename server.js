@@ -1,11 +1,17 @@
+
+require ('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
 const connectDataBase = require('./src/database/connection');
+
 const app = express();
+const port = process.env.PORT || 8080;
+
+// Conectar a la base de datos
+connectDataBase();
 const contactsRoute = require('./src/routes/contactsRoutes');
 const apiDocsRoute = require("./src/routes/swagger");
-connectDataBase();
 
-const port = process.env.PORT || 8080;
+
 app.use(express.json());
 
 // CORS middleware para permitir solicitudes desde cualquier origen

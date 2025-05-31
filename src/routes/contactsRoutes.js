@@ -3,7 +3,8 @@ const router = express.Router();
 const { getContacts, 
         getContactById, 
         addContact, 
-        deleteContact
+        deleteContact,
+        updateContact
          } = require('../controllers/contactsController');
 
 // Route to get all contacts
@@ -18,6 +19,8 @@ router.post('/', addContact);//Cuando alguien manda un POST a /contacts, llama a
 // ✖️ Route to delete a contact
 router.delete('/:id', deleteContact); //Cuando alguien manda un DELETE a /contacts/ID, llama a deleteContact
 
+// ✅ Nueva ruta PUT para actualizar un contacto
+router.put('/:id', updateContact);
 
 module.exports = router; // Export the router to use in the main app
 // This file defines the routes for the contacts API, linking them to the appropriate controller functions.

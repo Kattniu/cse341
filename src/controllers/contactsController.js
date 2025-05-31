@@ -54,9 +54,40 @@ const addContact = async (req, res) => {
     }
  };
 
+//✅ ACTUALIZA UN CONTACTO: Update a contact by ID
+const updateContact = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
+
+    // Validar que todos los campos estén presentes
+    if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
+      return res.status(400).json({ error: "Todos los campos son obligatorios." });
+    }
+
+    // findByIdAndUpdate recibe 3 argumentos: id, datos a actualizar, opciones
+    const updatedContact = await Contact.findByIdAndUpdate(
+      id,
+      { firstName, lastName, email, favoriteColor, birthday },
+      { new: true, runValidators: true } // devuelve el nuevo documento y valida datos
+    );
+
+    if (!updatedContact) {
+      return res.status(404).json({ error: "Contacto no encontrado." });
+    }
+
+    res.status(200).json(updatedContact); // Devuelve el contacto actualizado
+  } catch (error) {
+    console.error("Error updating contact:", error.message);
+    res.status(500).json({ error: "Error al actualizar el contacto." });
+  }
+};
+
 module.exports = {
-    getContacts,
-    getContactById,
-    addContact, 
-    deleteContact
+  getContacts,
+  getContactById,
+  addContact,
+  deleteContact,
+  updateContact,
+  
 };
