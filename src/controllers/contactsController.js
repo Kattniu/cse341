@@ -25,17 +25,35 @@ const getContactById = async (req, res) => {
     }
 };
 
+
 // ✅ AGREGA UN NUEVO CONTACTO: Add a new contact
 const addContact = async (req, res) => {
-    try {
-        const newContact = new Contact(req.body); // crea un nuevo contacto con los datos del cuerpo de la solicitud
-        const savedContact = await newContact.save(); // guarda el contacto en la base de datos
-        res.status(201).json(savedContact); // devuelve el contacto guardado con estado 201
-    } catch (error) {
-        console.error("Error saving contact:", error.message);
-        res.status(500).json({ error: "Error saving contact" });
+  try {
+    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
+
+    // ✅ Validación manual de campos requeridos
+    if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
+      return res.status(400).json({ error: "Todos los campos son obligatorios." });
     }
+
+    const newContact = new Contact({ firstName, lastName, email, favoriteColor, birthday });
+    const savedContact = await newContact.save();
+    res.status(201).json(savedContact);
+  } catch (error) {
+    console.error("Error al guardar contacto:", error.message);
+    res.status(500).json({ error: "Error al guardar contacto" });
+  }
 };
+//const addContact = async (req, res) => {
+//    try {
+//       const newContact = new Contact(req.body); // crea un nuevo contacto con los datos del cuerpo de la solicitud
+//        const savedContact = await newContact.save(); // guarda el contacto en la base de datos
+//        res.status(201).json(savedContact); // devuelve el contacto guardado con estado 201
+//    } catch (error) {
+//        console.error("Error saving contact:", error.message);
+//       res.status(500).json({ error: "Error saving contact" });
+//  }
+//};  
 
  //✖️DELETE UN CONTACTO: Delete a contact by ID
  const deleteContact = async (req, res) => {
@@ -56,6 +74,36 @@ const addContact = async (req, res) => {
 
 //✅ ACTUALIZA UN CONTACTO: Update a contact by ID
 const updateContact = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
+
+    // ✅ Validación de campos requeridos
+    if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
+      return res.status(400).json({ error: "Todos los campos son obligatorios." });
+    }
+
+    const updatedContact = await Contact.findByIdAndUpdate(
+      id,
+      { firstName, lastName, email, favoriteColor, birthday },
+      { new: true, runValidators: true } // ✅ Importante para que Mongoose valide
+    );
+
+    if (!updatedContact) {
+      return res.status(404).json({ error: "Contacto no encontrado." });
+    }
+
+    res.status(200).json(updatedContact);
+  } catch (error) {
+    console.error("Error al actualizar contacto:", error.message);
+    res.status(500).json({ error: "Error al actualizar contacto" });
+  }
+};
+
+
+
+
+/* const updateContact = async (req, res) => {
   try {
     const id = req.params.id;
     const { firstName, lastName, email, favoriteColor, birthday } = req.body;
@@ -81,7 +129,7 @@ const updateContact = async (req, res) => {
     console.error("Error updating contact:", error.message);
     res.status(500).json({ error: "Error al actualizar el contacto." });
   }
-};
+}; */
 
 module.exports = {
   getContacts,
